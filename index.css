@@ -95,3 +95,6 @@ width: fit-content;
 .cell::-webkit-scrollbar{
     display:none;
 }
+#zoom-val{
+    border: 1px black;
+}

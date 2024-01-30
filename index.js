@@ -3,6 +3,8 @@ const rows = 100;
 const headerElement = document.querySelector(".header");
 const serialNumber = document.querySelector(".sno");
 const mainContainer = document.querySelector(".row-container");
+const container = document.querySelector(".main-container");
+
 function createHeaderElement(){
     for(let i = 0 ; i <= columns; i++){
         const headerCell = document.createElement("div");
@@ -41,21 +43,6 @@ function createRow(rowNumber){
     mainContainer.appendChild(row);
 }
 
-function onCellFocus(event) {
-    const elementId = event.target.id;
-    cellNamePlaceholder.innerText = elementId;
-    activeElement = event.target;
-    if (state[elementId]) {
-        // already selected cell
-        // fill the options with the state of that cell
-        resetOptions(state[elementId]);
-    }
-    else {
-        // selected for the first time
-        // fill the options with default state
-        resetOptions(defaultProperties);
-    }
-}
 
 function buildMainContent() {
     // loop for 100 times
@@ -102,6 +89,21 @@ function resetOptions(optionsState) {
     form.bgcolor.value = optionsState.backgroundColor;
 }
 
+
+//apply style to cell
+function applyStylesToCell(styleObject) {
+   
+    activeElement.style.fontSize = `${styleObject.fontSize}px`;
+    activeElement.style.fontFamily = styleObject.fontFamily;
+    activeElement.style.color = styleObject.textColor;
+    activeElement.style.backgroundColor = styleObject.backgroundColor;
+    activeElement.style.textAlign = styleObject.textAlign;
+
+    activeElement.style.fontWeight = styleObject.isBold ? "bold" : "normal";
+    activeElement.style.fontStyle = styleObject.isItalic ? "italic" : "normal";
+    activeElement.style.textDecoration = styleObject.isUnderlined ? "underline" : "none";
+}
+
 function onFormChange() {
     if (!activeElement) {
         alert("Please select a cell to make changes");
@@ -121,6 +123,8 @@ function onFormChange() {
         textAlign: form.textalign.value 
     }
 
+ 
+    
   
     applyStylesToCell(currentState);
 
@@ -129,18 +133,23 @@ function onFormChange() {
     state[activeElement.id] = { ...currentState, value: activeElement.innerText };
 }
 
-function applyStylesToCell(styleObject) {
-   
-    activeElement.style.fontSize = `${styleObject.fontSize}px`;
-    activeElement.style.fontFamily = styleObject.fontFamily;
-    activeElement.style.color = styleObject.textColor;
-    activeElement.style.backgroundColor = styleObject.backgroundColor;
-    activeElement.style.textAlign = styleObject.textAlign;
 
-    activeElement.style.fontWeight = styleObject.isBold ? "bold" : "normal";
-    activeElement.style.fontStyle = styleObject.isItalic ? "italic" : "normal";
-    activeElement.style.textDecoration = styleObject.isUnderlined ? "underline" : "none";
+function onCellFocus(event) {
+    const elementId = event.target.id;
+    cellNamePlaceholder.innerText = elementId;
+    activeElement = event.target;
+    if (state[elementId]) {
+        // already selected cell
+        // fill the options with the state of that cell
+        resetOptions(state[elementId]);
+    }
+    else {
+        // selected for the first time
+        // fill the options with default state
+        resetOptions(defaultProperties);
+    }
 }
+
 
 
 
@@ -148,3 +157,29 @@ function applyStylesToCell(styleObject) {
 createHeaderElement();
 createSerialNumber();
 buildMainContent();
+
+
+const zoomInner = document.querySelector('#zoom-in');
+const zoomOuter= document.querySelector('#zoom-out');
+
+var zoomValue  = 1;
+function handleZoomIn(event){
+    event.preventDefault();
+    if(zoomValue <= 2){
+        zoomValue += 0.05;
+    }
+    container.style.transform = `scale(${zoomValue})`;
+
+}
+
+function handleZoomOut(event){
+    event.preventDefault();
+    if(zoomValue > 1){
+        zoomValue -= 0.05;
+    }
+    container.style.transform = `scale(${zoomValue})`;
+
+}
+
+zoomInner.addEventListener("click", handleZoomIn);
+zoomOuter.addEventListener("click", handleZoomOut);

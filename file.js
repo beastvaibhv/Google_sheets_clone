@@ -1,9 +1,9 @@
 let data = {
-    name: "aravind",
-    age: 22,
-    college: "something",
-    role: "Dev",
-    company: "Acciojob"
+    name: "Vaibhav",
+    age: 24,
+    college: "NA",
+    role: "Front-end",
+    company: "NA"
 }
 
 const a = document.querySelector("a");
